@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="result_area"></div>
+    <table>
+        <tr>
+            <td onclick="button_operation('(')">(</td>
+            <td onclick="button_operation(')')">)</td>
+            <td onclick="button_operation('.')">,</td>
+            <td onclick="button_operation('*')">x</td>
+        </tr>
+        <tr>
+            
+            <td class="number_button" onclick="button_operation('7')">7</td>
+            <td class="number_button" onclick="button_operation('8')">8</td>
+            <td class="number_button" onclick="button_operation('9')">9</td>
+            <td onclick="button_operation('/')">÷</td>
+        </tr>
+        <tr>
+            <td class="number_button" onclick="button_operation('4')">4</td>
+            <td class="number_button" onclick="button_operation('5')">5</td>
+            <td class="number_button" onclick="button_operation('6')">6</td>
+            <td onclick="button_operation('+')">+</td>
+        </tr>
+        <tr>
+            <td class="number_button" onclick="button_operation('1')">1</td>
+            <td class="number_button" onclick="button_operation('2')">2</td>
+            <td class="number_button" onclick="button_operation('3')">3</td>
+            <td onclick="button_operation('-')">-</td>
+        </tr>
+        <tr>
+            <td class="number_button" onclick="button_operation('0')">0</td>
+            <td class="remove_button" onclick="clear_entry()">CE</td>
+            <td class="remove_button" onclick="delete_all()">DEL</td>
+            <td id="calculate_button" onclick="calculate()">=</td>
+        </tr>
+
+    </table>
+    <script src="main.js"></script>
+</body>
+</html>
