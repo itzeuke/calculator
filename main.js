@@ -25,6 +25,10 @@ function button_operation(operation){
         math += "*" + operation;
         result_area.innerHTML += convert_for_display("*") + convert_for_display(operation);
         return;
+    } else if (operation == "power"){
+        math += "**2"
+        result_area.innerHTML += convert_for_display(operation);
+        return;
     }
 
     if(!(math_operators.includes(operation) && math_operators.includes(math.slice(-1)))){
@@ -49,23 +53,30 @@ function convert_for_display(operation){
         return " (";
     } else if(operation == ")"){
         return ") ";
+    } else if (operation == "power"){
+        return "²";
     } else {
         return operation;
     }
 }
 
 function clear_entry(){
-    math = math.slice(0, -1);
-    if(result_area.innerHTML.endsWith(" ")){
-        result_area.innerHTML = result_area.innerHTML.slice(0, -3);
-    } else {
+    if(math.slice(-3, -1) == "**"){
+        math = math.slice(0, -3);
         result_area.innerHTML = result_area.innerHTML.slice(0, -1);
+    } else {
+        math = math.slice(0, -1);
+        if(result_area.innerHTML.endsWith(" ")){
+            result_area.innerHTML = result_area.innerHTML.slice(0, -3);
+        } else {
+            result_area.innerHTML = result_area.innerHTML.slice(0, -1);
+        }
     }
 }
 
 function delete_all(){
     math = String();
-    result_area.innerHTML = String(0);
+    result_area.innerHTML = String();
 }
 
 function display_error(){
