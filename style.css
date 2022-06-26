@@ -60,3 +60,13 @@ td:hover {
     padding: 12px;
     box-sizing: border-box;
 }
+
+#close_root {
+    font-size: 40px;
+    padding: 6px;
+    background-color: rgb(20, 20, 20);
+    position: absolute;
+    top: 20vh;
+    left: 0;
+    display: none;
+}

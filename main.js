@@ -1,8 +1,19 @@
 let math = String();
 let result_area = document.getElementById("result_area");
 const math_operators = ["+", "-", "*", "/"];
+let close_root = document.getElementById("close_root");
+let root_counter = 0;
+
+function close_root_button(){
+        if(root_counter){
+            close_root.style.display = "inline";
+        } else {
+            close_root.style.display = "none";
+        }
+    }
 
 function button_operation(operation){
+    close_root_button();
     if(operation == "."){
         if(!String(result_area.innerHTML.split(" ").slice(-1)).includes(".")){ //Only comma behind nummbers and only one comma per number
             if(is_number(math.slice(-1))){
@@ -29,13 +40,23 @@ function button_operation(operation){
         math += "**2"
         result_area.innerHTML += convert_for_display(operation);
         return;
+    } else if (operation == "square_root"){
+        if(is_number(math.slice(-1))){
+            math += "*"
+            result_area.innerHTML += convert_for_display("*");
+        }
+        result_area.innerHTML += convert_for_display(operation);
+        math += "Math.sqrt("
+        root_counter += 1;
+        close_root_button();
+        return;
     }
 
-    if(!(math_operators.includes(operation) && math_operators.includes(math.slice(-1)))){
+    if(!(math_operators.includes(operation) && operation == math.slice(-1))){
         math += operation;
         result_area.innerHTML += convert_for_display(operation);
     } else {
-        math = math.slice(0, -2) + operation;
+        math = math.slice(0, -1) + operation;
         result_area.innerHTML = result_area.innerHTML.slice(0, -3) + convert_for_display(operation);
     }
 }
@@ -55,15 +76,36 @@ function convert_for_display(operation){
         return ") ";
     } else if (operation == "power"){
         return "²";
+    } else if (operation == "square_root"){
+        return "√ ";
     } else {
         return operation;
     }
 }
 
 function clear_entry(){
-    if(math.slice(-3, -1) == "**"){
+    if(math.slice(-3) == "**2"){
         math = math.slice(0, -3);
         result_area.innerHTML = result_area.innerHTML.slice(0, -1);
+    } else if (math.slice(-1) == ")" && root_counter > 0){
+        v = result_area.innerHTML.split(" ");
+        if(v.split(-2, -1) == "√"){
+            v = v.pop();
+            v = v.pop();
+            result_area.innerHTML = v.join(" ");
+            math.slice(0, math.split("Math.sqrt(").slice(0, -1));
+            if(root_counter > 0){
+                root_counter -= 1;
+                close_root_button();
+            }
+        }
+    } else if(math.slice(-10) == "Math.sqrt("){
+        result_area.innerHTML = result_area.innerHTML.slice(0, -2);
+        math = math.slice(0, -10);
+        if(root_counter > 0){
+            root_counter -= 1;
+            close_root_button();
+        }
     } else {
         math = math.slice(0, -1);
         if(result_area.innerHTML.endsWith(" ")){
@@ -77,6 +119,8 @@ function clear_entry(){
 function delete_all(){
     math = String();
     result_area.innerHTML = String();
+    root_counter = 0;
+    close_root_button();
 }
 
 function display_error(){
