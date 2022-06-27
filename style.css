@@ -68,5 +68,10 @@ td:hover {
     position: absolute;
     top: 20vh;
     left: 0;
-    display: none;
+}
+
+#debug {
+    position: absolute;
+    top: 0;
+    right: 0;
 }

@@ -4,8 +4,15 @@ const math_operators = ["+", "-", "*", "/"];
 let close_root = document.getElementById("close_root");
 let root_counter = 0;
 
+close_root.style.display = "none";
+
+function debug(){
+    console.log("math:" + math + "; root_counter:" + root_counter);
+    close_root_button();
+}
+
 function close_root_button(){
-        if(root_counter){
+        if(root_counter > 0){
             close_root.style.display = "inline";
         } else {
             close_root.style.display = "none";
@@ -13,7 +20,6 @@ function close_root_button(){
     }
 
 function button_operation(operation){
-    close_root_button();
     if(operation == "."){
         if(!String(result_area.innerHTML.split(" ").slice(-1)).includes(".")){ //Only comma behind nummbers and only one comma per number
             if(is_number(math.slice(-1))){
@@ -48,7 +54,6 @@ function button_operation(operation){
         result_area.innerHTML += convert_for_display(operation);
         math += "Math.sqrt("
         root_counter += 1;
-        close_root_button();
         return;
     }
 
@@ -96,7 +101,6 @@ function clear_entry(){
             math.slice(0, math.split("Math.sqrt(").slice(0, -1));
             if(root_counter > 0){
                 root_counter -= 1;
-                close_root_button();
             }
         }
     } else if(math.slice(-10) == "Math.sqrt("){
@@ -104,7 +108,6 @@ function clear_entry(){
         math = math.slice(0, -10);
         if(root_counter > 0){
             root_counter -= 1;
-            close_root_button();
         }
     } else {
         math = math.slice(0, -1);
