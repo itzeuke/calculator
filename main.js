@@ -28,6 +28,17 @@ function delete_all(){
 }
 
 function calculate(){
-    math = eval(math.join(" "));
-    result_area.innerHTML = math;
+    try {
+        math = eval(math.join(" "));
+        result_area.innerHTML = math;
+    } catch(e) {
+        display_error();
+    }
+
+}
+
+function display_error(){
+    result_area.style.color = "red";
+    result_area.style.fontWeight = 700;
+    setTimeout(() => { result_area.style.color = "white"; result_area.style.fontWeight = 500;}, 300)
 }
