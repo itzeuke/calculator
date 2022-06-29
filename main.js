@@ -1,7 +1,15 @@
 let result_area = document.getElementById("result_area");
 let math = [];
+const basic_operators = ["+", "-", "*", "/"];
 
 function button_operation(operation){
+    if(basic_operators.includes(operation) && basic_operators.includes(math[math.length -1])){
+        clear_entry();   //clear result_area's last element
+        result_area.innerHTML += translate_for_display(operation);
+        math[math.length -1] = operation;
+        return;
+    }
+
     result_area.innerHTML += translate_for_display(operation);
     math.push(operation);
     console.log(math);
