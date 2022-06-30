@@ -7,7 +7,7 @@ function button_operation(operation){
     if(basic_operators.includes(operation) && basic_operators.includes(math[math.length -1])){
         clear_entry();   //clear result_area's last element
         result_area.innerHTML += translate_for_display(operation);
-        math[math.length -1] = operation;
+        math[math.length] = operation;
         return;
     }
 
@@ -51,11 +51,11 @@ function delete_all(){
 }
 
 function calculate(){
+    console.log(math);
     try {
         math = eval(math.join(""));
         result_area.innerHTML = math;
     } catch(e) {
-        console.log(math);
         display_error();
     }
 
