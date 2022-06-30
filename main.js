@@ -73,10 +73,14 @@ function comma_number(){   //If the current number includes a comma true will be
         return false;
     }
     let after_comma = math.slice(last_comma + 1);
+    let is_comma_number = true;
     after_comma.forEach(element => {
         if(!(numbers.includes(element))){
-            return false;
+            is_comma_number = false;
         }
     });
+    if(!(is_comma_number)){
+        return false;
+    }
     return true;
 }
