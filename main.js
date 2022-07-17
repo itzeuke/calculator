@@ -3,6 +3,7 @@ let math = [];
 const basic_operators = ["+", "-", "*", "/"];
 const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 let displays_result = false;
+let ans = 0;
 
 function button_operation(operation){
     if(displays_result && !(basic_operators.includes(operation))){
@@ -10,12 +11,12 @@ function button_operation(operation){
     }
     displays_result = false;
 
-    if(math[math.length -1] == ")" && !(basic_operators.includes(operation))){
+    if([")", "ans"].includes(math[math.length -1]) && (!basic_operators.includes(operation) || operation == "ans")){
         math.push("*");
         result_area.innerHTML += translate_for_display("*");
     }
 
-    if(operation == "(" && numbers.includes(math[math.length -1])){
+    if(["(", "ans"].includes(operation) && numbers.includes(math[math.length -1])){
         math.push("*");
         result_area.innerHTML += translate_for_display("*");
     }
@@ -40,13 +41,15 @@ function button_operation(operation){
     }
 
     result_area.innerHTML += translate_for_display(operation);
+    console.log(operation);
     math.push(operation);
 }
 
 function translate_for_display(operation){
-    if (["+", "-", "*", "/"].includes(operation)){   //Return math operator with space around
+    if (["+", "-", "*", "/", "ans"].includes(operation)){   //Return math operator with space around
         if (operation == "*"){ operation = "x";}
         if (operation == "/"){ operation = "÷";}
+        if (operation == "ans"){ operation = "Ans";}
         return " " + operation + " ";
     } else {
         return operation;
@@ -68,12 +71,14 @@ function delete_all(){
 }
 
 function calculate(){
-    //console.log(`math type: ${typeof math}\nmath value: ${math}`);
+    // console.log(`math type: ${typeof math}\nmath value: ${math}`);
     try {
+        math = translate_for_calculate(math);
         math = String(eval(math.join("")));
         math = [math];
         //console.log(`math type: ${typeof math}\nmath value: ${math}`);
-        result_area.innerHTML = math;
+        result_area.innerHTML = math[0];
+        ans = math[0];
         displays_result = true;
     } catch(e) {
         display_error();
@@ -103,4 +108,12 @@ function comma_number(){   //If the current number includes a comma true will be
         return false;
     }
     return true;
+}
+
+function translate_for_calculate(math_array){
+    math_array.forEach((value, index) => {
+        if(value == "ans"){ math_array[index] = ans;}
+        return;
+    });
+    return math_array;
 }
