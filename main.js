@@ -16,7 +16,7 @@ function button_operation(operation){
         result_area.innerHTML += translate_for_display("*");
     }
 
-    if(["(", "ans"].includes(operation) && numbers.includes(math[math.length -1])){
+    if(["(", "ans", "square_root"].includes(operation) && numbers.includes(math[math.length -1])){
         math.push("*");
         result_area.innerHTML += translate_for_display("*");
     }
@@ -47,13 +47,13 @@ function button_operation(operation){
 
 function translate_for_display(operation){
     if (["+", "-", "*", "/", "ans"].includes(operation)){   //Return math operator with space around
-        if (operation == "*"){ operation = "x";}
-        if (operation == "/"){ operation = "÷";}
-        if (operation == "ans"){ operation = "Ans";}
+        if (operation == "*") operation = "x";
+        if (operation == "/") operation = "÷";
+        if (operation == "ans") operation = "Ans";
         return " " + operation + " ";
-    } else {
-        return operation;
     }
+        if (operation == "square_root") operation = "√";
+        return operation;
 }
 
 function clear_entry(){
@@ -74,9 +74,9 @@ function calculate(){
     // console.log(`math type: ${typeof math}\nmath value: ${math}`);
     try {
         math = translate_for_calculate(math);
+        console.log(`math type: ${typeof math}\nmath value: ${math}\nmath as string: ${math.join("")}`);
         math = String(eval(math.join("")));
         math = [math];
-        //console.log(`math type: ${typeof math}\nmath value: ${math}`);
         result_area.innerHTML = math[0];
         ans = math[0];
         displays_result = true;
@@ -112,8 +112,8 @@ function comma_number(){   //If the current number includes a comma true will be
 
 function translate_for_calculate(math_array){
     math_array.forEach((value, index) => {
-        if(value == "ans"){ math_array[index] = ans;}
-        return;
+        if(value == "ans") math_array[index] = ans;
+        if(value == "square_root") math_array[index] = "0.5**";
     });
     return math_array;
 }
