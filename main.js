@@ -6,17 +6,17 @@ let displays_result = false;
 let ans = 0;
 
 function button_operation(operation){
-    if(displays_result && !(basic_operators.includes(operation))){
+    if(displays_result && !(basic_operators.includes(operation) || ["square_root", "power"].includes(operation))){
         delete_all();
     }
     displays_result = false;
 
-    if([")", "ans", "pi"].includes(math[math.length -1]) && (!basic_operators.includes(operation) || operation == "ans")){
+    if([")", "ans", "pi", "square_root", "power"].includes(math[math.length -1]) && (!basic_operators.includes(operation) || operation == "ans")){
         math.push("*");
         result_area.innerHTML += translate_for_display("*");
     }
 
-    if(["(", "ans", "square_root", "pi"].includes(operation) && numbers.includes(math[math.length -1])){
+    if(["(", "ans", "pi"].includes(operation) && numbers.includes(math[math.length -1])){
         math.push("*");
         result_area.innerHTML += translate_for_display("*");
     }
@@ -52,7 +52,8 @@ function translate_for_display(operation){
         if (operation == "ans") operation = "Ans";
         return " " + operation + " ";
     }
-        if (operation == "square_root") operation = "√";
+        if (operation == "square_root") operation = "<p class='sup'>0.5</p>";
+        if (operation == "power") operation = "<p class='sup'>2</p>";
         if (operation == "pi") operation = "Π";
         return operation;
 }
@@ -114,7 +115,8 @@ function comma_number(){   //If the current number includes a comma true will be
 function translate_for_calculate(math_array){
     math_array.forEach((value, index) => {
         if(value == "ans") math_array[index] = ans;
-        if(value == "square_root") math_array[index] = "0.5**";
+        if(value == "square_root") math_array[index] = "**0.5";
+        if(value == "power") math_array[index] = "**2";
         if(value == "pi") math_array[index] = Math.PI;
     });
     return math_array;
