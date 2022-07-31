@@ -47,12 +47,12 @@ function button_operation(operation){
 }
 
 function translate_for_display(operation){
-    if (["+", "-", "*", "/", "ans"].includes(operation)){   //Return math operator with space around
-        if (operation == "*") operation = "x";
+    if (["+", "-", "/", "ans"].includes(operation)){   //Return math operator with space around
         if (operation == "/") operation = "÷";
         if (operation == "ans") operation = "Ans";
         return " " + operation + " ";
     }
+        if (operation == "*") operation = "<span class='multiplication'>x</span>";
         if (operation == "square_root") operation = "<p class='sup'>0.5</p>";
         if (operation == "power") operation = "<p class='sup'>2</p>";
         if (operation == "pi") operation = "Π";
