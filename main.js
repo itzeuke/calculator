@@ -139,7 +139,11 @@ function last_math_element(){
 }
 
 function element_needs_operator(operation){
-    return ([")", "ans", "pi", "square_root", "power"].includes(last_math_element()) && (!basic_operators.includes(operation) || ["power", "square_root"].includes(operation))) || (["(", "ans", "pi"].includes(operation) && is_number(last_math_element()));
+    if(math.length){
+        if(last_math_element() == ")" && ["power", "square_root"].includes(operation)) return;
+        if(["(", "pi", "ans"].includes(operation) && !basic_operators.includes(last_math_element())) return true;
+        if([")", "pi", "ans", "power", "square_root"].includes(last_math_element()) && !basic_operators.includes(operation)) return true;
+    }
 }
 
 function basic_operators_behind_each_other(operation){
