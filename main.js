@@ -12,6 +12,11 @@ function button_operation(operation){
 
     displays_result = false;
 
+    // if(["square_root", "power"].includes(operation)){
+    //     math.push("ans");
+    //     result_area.innerHTML += translate_for_display("ans");
+    // }
+
     if(element_needs_operator(operation)){
         math.push("*");
         result_area.innerHTML += translate_for_display("*");
@@ -134,7 +139,7 @@ function last_math_element(){
 }
 
 function element_needs_operator(operation){
-    return ([")", "ans", "pi", "square_root", "power"].includes(last_math_element()) && (!basic_operators.includes(operation) || operation == "ans")) || (["(", "ans", "pi"].includes(operation) && is_number(last_math_element()));
+    return ([")", "ans", "pi", "square_root", "power"].includes(last_math_element()) && (!basic_operators.includes(operation) || ["power", "square_root"].includes(operation))) || (["(", "ans", "pi"].includes(operation) && is_number(last_math_element()));
 }
 
 function basic_operators_behind_each_other(operation){
