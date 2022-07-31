@@ -12,10 +12,10 @@ function button_operation(operation){
 
     displays_result = false;
 
-    // if(["square_root", "power"].includes(operation)){
-    //     math.push("ans");
-    //     result_area.innerHTML += translate_for_display("ans");
-    // }
+    if(!math.length && ["power", "square_root"].includes(operation)){
+        math.push("ans");
+        result_area.innerHTML += translate_for_display("ans");
+    }
 
     if(element_needs_operator(operation)){
         math.push("*");
@@ -147,10 +147,9 @@ function last_math_element(){
 
 function element_needs_operator(operation){
     if(math.length){
-        if(last_math_element() == ")" && ["power", "square_root"].includes(operation)) return;
-        if(["power", "square_root"].includes(last_math_element()) && ["power", "square_root"].includes(operation)) return false;
+        let v = ["+", "-", "*", "/", "power", "square_root", ")"];
         if(["(", "pi", "ans"].includes(operation) && !basic_operators.includes(last_math_element())) return true;
-        if([")", "pi", "ans", "power", "square_root"].includes(last_math_element()) && !basic_operators.includes(operation)) return true;
+        if([")", "pi", "ans", "power", "square_root"].includes(last_math_element()) && !v.includes(operation)) return true;
     }
 }
 
