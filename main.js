@@ -1,27 +1,23 @@
 let result_area = document.getElementById("result_area");
 let math = [];
 const basic_operators = ["+", "-", "*", "/"];
-const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 let displays_result = false;
 let ans = 0;
 
 function button_operation(operation){
+    //Delete displayed result if you dont use a math operator
     if(displays_result && !(basic_operators.includes(operation) || ["square_root", "power"].includes(operation))){
         delete_all();
     }
+
     displays_result = false;
 
-    if([")", "ans", "pi", "square_root", "power"].includes(math[math.length -1]) && (!basic_operators.includes(operation) || operation == "ans")){
+    if(element_needs_operator(operation)){
         math.push("*");
         result_area.innerHTML += translate_for_display("*");
     }
 
-    if(["(", "ans", "pi"].includes(operation) && numbers.includes(math[math.length -1])){
-        math.push("*");
-        result_area.innerHTML += translate_for_display("*");
-    }
-
-    if(basic_operators.includes(operation) && basic_operators.includes(math[math.length -1])){   //No basic operators behind each other
+    if(basic_operators_behind_each_other(operation)){
         clear_entry();   //clear result_area's last element
         result_area.innerHTML += translate_for_display(operation);
         math[math.length] = operation;
@@ -29,11 +25,11 @@ function button_operation(operation){
     }
 
     if(operation == "."){
-        if(!(numbers.includes(math[math.length -1]) || math[math.length -1] == ".")){   //If last input isn't a number or a comma add 0 before comma
+        if(auto_zero_before_comma()){
             math.push("0");
             result_area.innerHTML += translate_for_display("0");
         } else {
-            if(comma_number()){  //if it's no comma number
+            if(is_comma_number()){
                 display_error();
                 return;
             }
@@ -41,8 +37,8 @@ function button_operation(operation){
     }
 
     result_area.innerHTML += translate_for_display(operation);
-    console.log(operation);
     math.push(operation);
+    debug();
 }
 
 function translate_for_display(operation){
@@ -60,7 +56,7 @@ function translate_for_display(operation){
 
 function clear_entry(){
     try {
-        result_area.innerHTML = result_area.innerHTML.slice(0, result_area.innerHTML.length - translate_for_display(math[math.length -1]).length);
+        result_area.innerHTML = result_area.innerHTML.slice(0, result_area.innerHTML.length - translate_for_display(last_math_element()).length);   //Delete last result_area element
         math.pop();
     } catch(e){
         return;
@@ -73,12 +69,11 @@ function delete_all(){
 }
 
 function calculate(){
-    // console.log(`math type: ${typeof math}\nmath value: ${math}`);
     try {
+        debug();
         math = translate_for_calculate(math);
-        console.log(`math type: ${typeof math}\nmath value: ${math}\nmath as string: ${math.join("")}`);
-        math = String(eval(math.join("")));
-        math = [math];
+        math = math.join("");
+        math = [String(eval(math))];
         result_area.innerHTML = math[0];
         ans = math[0];
         displays_result = true;
@@ -94,7 +89,11 @@ function display_error(){
     setTimeout(() => { result_area.style.color = "white"; result_area.style.fontWeight = 500;}, 300)
 }
 
-function comma_number(){   //If the current number includes a comma true will be returned else false
+/**
+ * @returns current number includes a comma
+ */
+
+function is_comma_number(){
     let last_comma = math.lastIndexOf(".");
     if(last_comma == -1){
         return false;
@@ -102,7 +101,7 @@ function comma_number(){   //If the current number includes a comma true will be
     let after_comma = math.slice(last_comma + 1);
     let is_comma_number = true;
     after_comma.forEach(element => {
-        if(!(numbers.includes(element))){
+        if(!is_number(element)){
             is_comma_number = false;
         }
     });
@@ -120,4 +119,28 @@ function translate_for_calculate(math_array){
         if(value == "pi") math_array[index] = Math.PI;
     });
     return math_array;
+}
+
+function debug(){
+    console.log(`math type: ${typeof math}\nmath value: ${math}\nmath as string: ${math.join("")}\nmath translated: ${translate_for_calculate(math).join("")}`);
+}
+
+function is_number(operation){
+    return ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(operation);
+}
+
+function last_math_element(){
+    return math[math.length -1];
+}
+
+function element_needs_operator(operation){
+    return ([")", "ans", "pi", "square_root", "power"].includes(last_math_element()) && (!basic_operators.includes(operation) || operation == "ans")) || (["(", "ans", "pi"].includes(operation) && is_number(last_math_element()));
+}
+
+function basic_operators_behind_each_other(operation){
+    return basic_operators.includes(operation) && basic_operators.includes(last_math_element());
+}
+
+function auto_zero_before_comma(){
+    return !(is_number(last_math_element()) || last_math_element() == ".");
 }
