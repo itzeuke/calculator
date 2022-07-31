@@ -61,8 +61,14 @@ function translate_for_display(operation){
 
 function clear_entry(){
     try {
-        result_area.innerHTML = result_area.innerHTML.slice(0, result_area.innerHTML.length - translate_for_display(last_math_element()).length);   //Delete last result_area element
         math.pop();
+        result_area.innerHTML = String();
+        math.forEach((value) => {
+            result_area.innerHTML += translate_for_display(value);
+            console.log(value);
+            debug();
+        });
+        debug();
     } catch(e){
         return;
     }
@@ -82,6 +88,7 @@ function calculate(){
         result_area.innerHTML = math[0];
         ans = math[0];
         displays_result = true;
+        debug();
     } catch(e) {
         display_error();
     }
@@ -127,7 +134,7 @@ function translate_for_calculate(math_array){
 }
 
 function debug(){
-    console.log(`math type: ${typeof math}\nmath value: ${math}\nmath as string: ${math.join("")}\nmath translated: ${translate_for_calculate(math).join("")}`);
+    console.log(`math type: ${typeof math}\nmath value: ${math}\nmath as string: ${math.join("")}\nresult_area: ${result_area.innerHTML}`);
 }
 
 function is_number(operation){
@@ -141,6 +148,7 @@ function last_math_element(){
 function element_needs_operator(operation){
     if(math.length){
         if(last_math_element() == ")" && ["power", "square_root"].includes(operation)) return;
+        if(["power", "square_root"].includes(last_math_element()) && ["power", "square_root"].includes(operation)) return false;
         if(["(", "pi", "ans"].includes(operation) && !basic_operators.includes(last_math_element())) return true;
         if([")", "pi", "ans", "power", "square_root"].includes(last_math_element()) && !basic_operators.includes(operation)) return true;
     }
